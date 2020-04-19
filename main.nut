@@ -1,7 +1,10 @@
 /**
  * Simply using AIList of indexes is faster than any squirrel implementation.
+ *
+ * Please note! It's not possible to check if an item exists in the list
+ *  with this priority queue. Sorry!
  */
-class Native_Heap
+class Sorted_List
 {
 	_queue = null;
 	_sorter = null;
@@ -18,6 +21,7 @@ class Native_Heap
 	 *  The complexity of this operation is UNKNOWN
 	 * @param item The item to add to the list.
 	 * @param priority The priority this item has.
+	 * @return True afterwards
 	 */
 	function Insert(item, priority);
 
@@ -39,45 +43,45 @@ class Native_Heap
 
 	/**
 	 * Get the amount of current items in the list.
-	 *  The complexity of this operation is UNKNOWN
+	 *  The complexity of this operation is O(1)
 	 * @return The amount of items currently in the list.
 	 */
 	function Count();
 
 	/**
-	 * Check if an item exists in the list.
-	 *  The complexity of this operation is UNKNOWN
+	 * It's not possible to check if an item exists in the list
+	 *  with this priority queue. Sorry!
 	 * @param item The item to check for.
-	 * @return True if the item is already in the list.
 	 */
 	function Exists(item);
 };
 
-function Native_Heap::Insert(item, priority)
+function Sorted_List::Insert(item, priority)
 {
 	_queue.push(item);
 	_sorter.AddItem(_queue.len() - 1, priority);
+	return true;
 }
 
-function Native_Heap::Pop()
+function Sorted_List::Pop()
 {
+	if (_sorter.IsEmpty()) return null;
 	local ret = _queue[_sorter.Begin()];
 	_sorter.RemoveTop(1);
 	return ret;
 }
 
-function Native_Heap::Peek()
+function Sorted_List::Peek()
 {
-	if (_sorter.Count() == 0) return null;
-	return _queue[_sorter.Begin()];
+	return _sorter.IsEmpty() ? null : _queue[_sorter.Begin()];
 }
 
-function Native_Heap::Count()
+function Sorted_List::Count()
 {
 	return _sorter.Count();
 }
 
-function Native_Heap::Exists(item)
+function Sorted_List::Exists(item)
 {
-	return _sorter.HasItem(item);
+	throw("It's not possible to check if an item exists in the list with this priority queue. Sorry!");
 }

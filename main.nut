@@ -59,7 +59,7 @@ class Sorted_List
 function Sorted_List::Insert(item, priority)
 {
 	_queue.push(item);
-	_sorter.AddItem(_queue.len() - 1, priority);
+	_sorter.AddItem(--_queue.len(), priority);
 	return true;
 }
 

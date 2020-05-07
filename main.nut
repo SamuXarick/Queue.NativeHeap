@@ -1,17 +1,16 @@
 /**
  * Simply using AIList of indexes is faster than any squirrel implementation.
  *
- * Please note! It's not possible to check if an item exists in the list
- *  with this priority queue. Sorry!
  */
 class Sorted_List
 {
 	_queue = null;
 	_sorter = null;
+	_enumerator = 0;
 
 	constructor()
 	{
-		_queue = [];
+		_queue = {};
 		_sorter = AIList();
 		_sorter.Sort(AIList.SORT_BY_VALUE, AIList.SORT_ASCENDING);
 	}
@@ -21,7 +20,6 @@ class Sorted_List
 	 *  The complexity of this operation is UNKNOWN
 	 * @param item The item to add to the list.
 	 * @param priority The priority this item has.
-	 * @return True afterwards
 	 */
 	function Insert(item, priority);
 
@@ -58,17 +56,17 @@ class Sorted_List
 
 function Sorted_List::Insert(item, priority)
 {
-	_queue.push(item);
-	_sorter.AddItem(--_queue.len(), priority);
-	return true;
+	_queue[_enumerator] <- item;
+	_sorter.AddItem(_enumerator++, priority);
+	return/* true*/;
 }
 
 function Sorted_List::Pop()
 {
 	if (_sorter.IsEmpty()) return null;
-	local ret = _queue[_sorter.Begin()];
-	_sorter.RemoveTop(1);
-	return ret;
+	local ret = _sorter.Begin();
+	_sorter.RemoveItem(ret);
+	return delete _queue[ret];
 }
 
 function Sorted_List::Peek()
@@ -83,5 +81,9 @@ function Sorted_List::Count()
 
 function Sorted_List::Exists(item)
 {
-	throw("It's not possible to check if an item exists in the list with this priority queue. Sorry!");
+	/* Brute-force find the item (there is no faster way, as we don't have the priority number) */
+	foreach (node in _queue) {
+		if (node == item) return true;
+	}
+	return false;
 }

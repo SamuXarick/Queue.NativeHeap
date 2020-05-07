@@ -1,12 +1,11 @@
 /**
  * Simply using AIList of indexes is faster than any squirrel implementation.
- *
  */
 class Sorted_List
 {
 	_queue = null;
 	_sorter = null;
-	_enumerator = 0;
+	_index = 0;
 
 	constructor()
 	{
@@ -56,8 +55,8 @@ class Sorted_List
 
 function Sorted_List::Insert(item, priority)
 {
-	_queue[_enumerator] <- item;
-	_sorter.AddItem(_enumerator++, priority);
+	_queue[_index] <- item;
+	_sorter.AddItem(_index++, priority);
 	return/* true*/;
 }
 

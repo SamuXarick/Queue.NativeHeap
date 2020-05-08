@@ -46,9 +46,10 @@ class Sorted_List
 	function Count();
 
 	/**
-	 * It's not possible to check if an item exists in the list
-	 *  with this priority queue. Sorry!
+	 * Check if an item exists in the list.
+	 *  The complexity of this operation is O(n).
 	 * @param item The item to check for.
+	 * @return True if the item is already in the list.
 	 */
 	function Exists(item);
 };
